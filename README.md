@@ -23,7 +23,7 @@
 
 ###
 
-<p align="left">I'm Matheus Machado from Aracaju/Sergipe<br><br>- 🔭 I’m working as freelancer<br>- 📚 I'm currently learning rust<br>- ⚡ In my free time I am an athlete</p>
+<p align="left">I'm Matheus Machado from Aracaju/Sergipe<br>
 
 ###
 

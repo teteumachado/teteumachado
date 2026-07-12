@@ -49,7 +49,7 @@ Schemas vazios iniciais em `source/schemas/`. Cada entidade em seu arquivo. `sou
 
 `drizzle.config.ts` na raiz aponta para `packages/database/source/schemas/` como schema e `packages/database/source/migrations/` como output.
 
-Scripts no `packages/database/package.json`:
+Scripts na raiz do monorepo (`package.json`):
 
 - `db:generate` → `drizzle-kit generate`
 - `db:push` → `drizzle-kit push` (dev)

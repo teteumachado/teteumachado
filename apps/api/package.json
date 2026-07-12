@@ -23,6 +23,7 @@
     "zod": "^4.4.3"
   },
   "dependencies": {
+    "@workspace/database": "workspace:*",
     "fastify": "^5.10.0"
   }
 }

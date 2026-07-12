@@ -11,7 +11,6 @@ import tseslint from "typescript-eslint"
  * */
 export const config = [
   js.configs.recommended,
-  eslintConfigPrettier,
   ...tseslint.configs.recommended,
   {
     plugins: {
@@ -24,6 +23,12 @@ export const config = [
   {
     plugins: {
       onlyWarn,
+    },
+  },
+  eslintConfigPrettier,
+  {
+    rules: {
+      quotes: ["warn", "single", { avoidEscape: true }],
     },
   },
   {

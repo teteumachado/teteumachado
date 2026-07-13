@@ -18,7 +18,7 @@ export const Socials = () => {
     <div className="flex gap-2 items-center">
       {socials.map(s => (
         <Link href={s.url} key={s.url}>
-          <Button size="icon-lg" variant="ghost">
+          <Button size="icon-lg" variant="ghost" className="transition-transform hover:scale-110 active:scale-95">
             {s.icon}
           </Button>
         </Link>

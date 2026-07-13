@@ -1,0 +1,21 @@
+{
+  "name": "@workspace/transactional",
+  "version": "0.0.0",
+  "type": "module",
+  "private": true,
+  "license": "PROPRIETARY",
+  "exports": {
+    ".": "./source/index.ts",
+    "./constants": "./source/constants/index.ts",
+    "./articles": "./source/articles/index.ts"
+  },
+  "scripts": {
+    "lint": "eslint"
+  },
+  "devDependencies": {
+    "@workspace/eslint-config": "workspace:*",
+    "@workspace/typescript-config": "workspace:*",
+    "eslint": "^9",
+    "typescript": "^5"
+  }
+}

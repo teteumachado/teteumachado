@@ -1,6 +1,7 @@
 'use client'
 
 import { ThemeSwitcher } from '@/components/theme-switcher'
+import { Socials } from '@/components/socials'
 
 export const Header = () => {
   return (
@@ -9,7 +10,10 @@ export const Header = () => {
         <h1 className="font-medium text-md">Matheus Machado</h1>
         <h2 className="text-muted-foreground text-xs">Indie Hacker / Builder</h2>
       </div>
-      <ThemeSwitcher />
+      <div className="flex gap-2 items-center">
+        <Socials />
+        <ThemeSwitcher />
+      </div>
     </div>
   )
 }

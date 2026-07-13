@@ -1,4 +1,4 @@
-import { Geist_Mono, Montserrat, Crimson_Text } from 'next/font/google'
+import { Geist_Mono, Montserrat, Merriweather } from 'next/font/google'
 
 import '@workspace/ui/globals.css'
 import { ThemeProvider } from '@/components/theme-provider'
@@ -12,10 +12,15 @@ const fontMono = Geist_Mono({
   variable: '--font-mono',
 })
 
-const fontSerif = Crimson_Text({
+const merriweather = Merriweather({
   subsets: ['latin'],
-  variable: '--font-serif',
-  weight: ['400', '600', '700'],
+  variable: '--font-merriweather',
+  weight: ['400', '700'],
+})
+
+const geistMono = Geist_Mono({
+  subsets: ['latin'],
+  variable: '--font-geist-mono',
 })
 
 export const metadata: Metadata = {
@@ -34,10 +39,10 @@ export default function RootLayout({
       suppressHydrationWarning
       className={cn(
         'antialiased',
-        fontMono.variable,
-        'font-sans',
         montserrat.variable,
-        fontSerif.variable,
+        fontMono.variable,
+        merriweather.variable,
+        geistMono.variable,
       )}
     >
       <body>

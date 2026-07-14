@@ -1,14 +1,6 @@
 'use client'
 import { motion } from 'framer-motion'
 import { projects } from '@workspace/transactional'
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@workspace/ui/components/card'
-import { ScrollArea, ScrollBar } from '@workspace/ui/components/scroll-area'
 import Link from 'next/link'
 import { Button } from '@workspace/ui/components/button'
 import { IconExternalLink } from '@tabler/icons-react'
@@ -16,7 +8,7 @@ import { IconExternalLink } from '@tabler/icons-react'
 export const Projects = () => {
   return (
     <section className="w-full py-8">
-      <div className="w-full max-w-sm md:max-w-md lg:max-w-lg px-3 mx-auto mb-6">
+      <div className="w-full max-w-sm md:max-w-md lg:max-w-lg px-3 mx-auto mb-1">
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
@@ -33,29 +25,28 @@ export const Projects = () => {
         </motion.div>
       </div>
 
-      <ScrollArea>
-        <div className="flex gap-3 px-3 pb-4">
-          {projects.map(p => (
-            <Card className="min-w-96 max-w-sm md:max-w-md lg:max-w-lg shrink-0" key={p.url}>
-              <CardHeader>
-                <CardTitle className="font-serif text-sm italic">{p.name}</CardTitle>
-              </CardHeader>
-              <CardContent className="flex-1">
-                <p className="text-xs">{p.description}</p>
-              </CardContent>
-              <CardFooter>
-                <Link href={p.url}>
-                  <Button size="lg">
-                    <IconExternalLink />
-                    Ver mais
-                  </Button>
-                </Link>
-              </CardFooter>
-            </Card>
-          ))}
-        </div>
-        <ScrollBar orientation="horizontal" />
-      </ScrollArea>
+      <div className="w-full max-w-sm md:max-w-md lg:max-w-lg px-3 mx-auto flex flex-col gap-2">
+        {projects.map((p, i) => (
+          <Link key={i} href={p.url} target="_blank">
+            <motion.div
+              whileHover={{ y: -2 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+              className="w-full flex justify-between p-2 border rounded items-center transition-colors hover:border-primary/30 hover:shadow-sm"
+            >
+              <div className="flex flex-col gap-1">
+                <h1 className="text-xs">{p.name}</h1>
+                <h2 className="text-[0.7rem]">{p.shortDescription}</h2>
+              </div>
+              <motion.span
+                whileHover={{ x: 2, y: -2, opacity: 0.7 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+              >
+                <IconExternalLink stroke={1} size={20} />
+              </motion.span>
+            </motion.div>
+          </Link>
+        ))}
+      </div>
     </section>
   )
 }

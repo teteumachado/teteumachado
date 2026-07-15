@@ -1,10 +1,5 @@
 import type { NextConfig } from 'next'
 import createMDX from '@next/mdx'
-import remarkFrontmatter from 'remark-frontmatter'
-import remarkMdxFrontmatter from 'remark-mdx-frontmatter'
-import remarkGfm from 'remark-gfm'
-import rehypeSlug from 'rehype-slug'
-import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 
 const nextConfig: NextConfig = {
   transpilePackages: ['@workspace/ui'],
@@ -14,11 +9,11 @@ const nextConfig: NextConfig = {
 const withMDX = createMDX({
   options: {
     remarkPlugins: [
-      remarkFrontmatter,
-      [remarkMdxFrontmatter, { name: 'frontmatter' }],
-      remarkGfm,
+      'remark-frontmatter',
+      ['remark-mdx-frontmatter', { name: 'frontmatter' }],
+      'remark-gfm',
     ],
-    rehypePlugins: [rehypeSlug, rehypeAutolinkHeadings],
+    rehypePlugins: ['rehype-slug', 'rehype-autolink-headings'],
   },
 })
 

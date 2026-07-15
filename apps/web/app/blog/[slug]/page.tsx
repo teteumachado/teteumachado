@@ -37,7 +37,7 @@ export default async function BlogPostPage({ params }: Props) {
   )
 
   return (
-    <article className="prose prose-neutral dark:prose-invert max-w-none">
+    <article className="blog-post">
       <Content />
     </article>
   )

@@ -7,7 +7,8 @@
   "exports": {
     ".": "./source/index.ts",
     "./constants": "./source/constants/index.ts",
-    "./articles": "./source/articles/index.ts"
+    "./articles": "./source/articles/index.ts",
+    "./articles/*": "./source/articles/*"
   },
   "scripts": {
     "lint": "eslint"

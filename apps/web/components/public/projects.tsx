@@ -29,7 +29,7 @@ export const Projects = () => {
           <Link key={i} href={p.url} target="_blank">
             <div className="w-full flex justify-between p-2 rounded items-center transition-colors border border-transparent hover:border hover:border-primary/30 hover:shadow-sm">
               <div className="flex flex-col gap-1">
-                <h1 className="text-xs">{p.name}</h1>
+                <h1 className="text-xs font-bold">{p.name}</h1>
                 <h2 className="text-[0.7rem]">{p.shortDescription}</h2>
               </div>
             </div>

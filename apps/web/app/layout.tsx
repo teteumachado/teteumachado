@@ -25,7 +25,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://teteumachado.com'),
-  title: 'Matheus Machado | Indie Hacker',
+  title: 'Matheus Machado | Technology Enthusiast',
   description: '...',
 }
 

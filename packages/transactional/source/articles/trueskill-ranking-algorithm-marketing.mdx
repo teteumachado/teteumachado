@@ -1,0 +1,184 @@
+---
+title: 'TrueSkill — O que aprendi tentando entender como jogos ranqueiam jogadores (e como isso virou um projeto de marketing)'
+description: 'Como um algoritmo probabilístico da Microsoft Research para ranquear jogadores no Xbox Live inspirou um sistema de pesquisa de preferência de mercado — e por que comparações diretas vencem escalas abstratas.'
+date: 2026-07-16
+tags: [product, algorithms, marketing]
+featured: true
+---
+
+# TrueSkill - O que aprendi tentando entender como jogos ranqueiam jogadores (e como isso virou um projeto de marketing)
+
+Tudo começou com uma curiosidade boba: como o ranking do matchmaking de jogos online funciona de verdade?
+
+Não a explicação superficial de "você ganha pontos quando vence e perde quando perde". Eu queria entender o mecanismo por baixo — por que alguns jogos sobem seu rank mesmo quando você perde, por que a incerteza do sistema diminui com o tempo, por que no começo de uma conta tudo parece caótico e depois estabiliza.
+
+Quando fui a fundo, encontrei o **TrueSkill** — um algoritmo probabilístico criado pela Microsoft Research para ranquear jogadores no Xbox Live. E quando entendi como ele funcionava, tive um daqueles momentos de "espera, isso não serve só para jogos."
+
+Serve para marketing. Serve muito.
+
+---
+
+## O problema que eu não sabia que existia
+
+Antes de chegar à solução, preciso te contar qual é o problema.
+
+Existe um gap silencioso em quase toda pesquisa de preferência de mercado: os métodos que usamos foram feitos para medir coisas objetivas — conversão, clique, receita. Quando os aplicamos para entender _qual criativo as pessoas preferem_, ou _qual nome de produto ressoa mais_, estamos usando a ferramenta errada para o trabalho errado.
+
+Deixa eu mostrar onde cada método quebra.
+
+### A/B Testing
+
+É o queridinho do marketing de performance, e com razão — para decisões finais com métricas concretas ele é imbatível. Mas quando o objetivo é _explorar preferências entre muitos itens_, ele tem limitações sérias:
+
+- Você testa **duas variantes por vez**. Para comparar 10 criativos com rigor, você precisaria de dezenas de rodadas sequenciais.
+- Requer **volumes altos de tráfego** para atingir significância estatística.
+- É **lento por natureza** — cada rodada exige tempo de exposição e coleta.
+- Não gera um **ranking global**: ele responde "A ou B?", não "qual dos dez é o melhor?"
+
+### Multi-Armed Bandits
+
+Bandits são brilhantes para **otimização em produção** — maximizar conversão em tempo real enquanto ainda explora. Mas não foram feitos para pesquisa estruturada:
+
+- O objetivo é maximizar performance, não _entender_ preferência.
+- Não geram um ranking claro e interpretável ao final.
+- A exploração é dinâmica demais para quem quer uma resposta estruturada para apresentar para um cliente ou time.
+
+### Formulários e escalas (Likert, NPS)
+
+Pedir para alguém avaliar um criativo de 1 a 5 parece simples. O problema é que produz dados barulhentos. As pessoas calibram escalas de formas completamente diferentes — um "4" entusiasta de uma pessoa equivale ao "3" morno de outra. E comparar médias de itens avaliados em momentos distintos é metodologicamente problemático.
+
+---
+
+## O que o TrueSkill faz diferente
+
+TrueSkill é um algoritmo de **ranqueamento probabilístico baseado em comparações diretas**. A premissa é elegante:
+
+> Em vez de pedir avaliações absolutas, o sistema aprende através de comparações — A ou B? — e reconstrói um ranking global a partir dessas preferências.
+
+É exatamente o que acontece no matchmaking. O sistema não te pede para avaliar sua habilidade de 1 a 10. Ele te coloca para jogar contra outros jogadores, observa quem vence, e _infere_ sua habilidade a partir dessas comparações.
+
+### Dois números que carregam tudo
+
+Cada item no sistema é representado por dois parâmetros:
+
+|Parâmetro|O que representa|
+|---|---|
+|**μ (mu)**|A qualidade estimada — a posição no ranking|
+|**σ (sigma)**|A incerteza dessa estimativa — o quanto ainda não sabemos|
+
+Essa dupla muda tudo. Ela permite que o sistema distinga situações completamente diferentes:
+
+|Perfil|O que significa na prática|
+|---|---|
+|μ alto + σ baixo|Item forte, bem validado, confiança alta|
+|μ alto + σ alto|Parece bom, mas ainda pouco testado|
+|μ baixo + σ alto|Desconhecido — precisa de mais comparações antes de julgar|
+|μ baixo + σ baixo|Consistentemente fraco — o sistema tem certeza|
+
+Um sistema que só guarda μ jogaria fora informação crítica. O σ é o que transforma um ranking estático em um modelo vivo que sabe o que ainda não sabe.
+
+### Como o aprendizado acontece
+
+O fluxo do ponto de vista do usuário é simples:
+
+```
+Usuário compara A vs B
+        ↓
+Sistema registra a preferência
+        ↓
+TrueSkill atualiza μ e σ de ambos os itens
+        ↓
+Ranking global é recalculado
+        ↓
+Sistema escolhe os próximos pares mais informativos
+```
+
+A cada comparação, o algoritmo usa inferência bayesiana para atualizar suas crenças. Intuitivamente: se A vence B e B era considerado forte, o μ de A sobe bastante. Se A vence um item já considerado fraco, o ganho é menor. O sistema pondera a informação de cada confronto.
+
+E aqui tem um detalhe que pouca gente menciona: o sistema pode **escolher inteligentemente quais pares comparar**. Em vez de testar todas as combinações possíveis, ele prioriza os confrontos mais informativos — onde a incerteza é maior ou onde os μ são mais próximos. Resultado: você ranqueia dezenas de itens com um número surpreendentemente pequeno de comparações.
+
+---
+
+## Onde ele realmente se destaca — com casos reais
+
+Depois de entender o algoritmo, comecei a mapear onde ele faz mais sentido. Esses são os contextos onde o TrueSkill claramente vence os métodos tradicionais:
+
+### 1. Triagem de criativos antes do A/B test
+
+Seu time de design produziu 15 variações de um banner. Você não tem orçamento nem tempo para colocar todas em A/B test. Com TrueSkill, você mostra pares para um painel pequeno — 20, 30 pessoas — e em poucas rodadas já tem um ranking com nível de confiança por item. Os dois ou três melhores vão para o A/B test real.
+
+O algoritmo funcionou como um **funil de triagem inteligente**: barato, rápido, e baseado em comparação real em vez de avaliação abstrata.
+
+### 2. Pesquisa de nome de produto ou marca
+
+Pesquisas tradicionais de naming pedem para as pessoas avaliarem nomes em escala de 1 a 5. O problema: as pessoas usam escalas de formas diferentes, e comparar médias de itens avaliados em momentos distintos é fraco metodologicamente.
+
+Com TrueSkill, você pergunta simplesmente "qual desses dois nomes ressoa mais com você?" repetidamente. O ranking emergente é muito mais confiável porque é _relativo_ — a pessoa não precisa calibrar uma escala abstrata, só precisa escolher.
+
+### 3. Priorização de features de produto
+
+Times de produto frequentemente decidem o que construir através de votação em post-its ou formulários de prioridade — ambos com problemas sérios de viés e inconsistência. TrueSkill permite que stakeholders façam comparações diretas: "feature A ou feature B é mais importante para o usuário?"
+
+O resultado é um ranking de prioridade com incerteza explícita. Onde o σ ainda é alto, você sabe exatamente onde precisa de mais input antes de decidir.
+
+### 4. Curadoria de conteúdo com preferência de audiência
+
+Uma publicação que quer entender o que a audiência prefere — antes de ter volume suficiente para treinar modelos — pode usar TrueSkill para coletar preferências de um grupo pequeno de leitores e já ter um ranking robusto. Formatos, temas, profundidade de texto, abordagem narrativa — tudo ranqueável com poucas sessões.
+
+### 5. Seleção de embalagem ou design físico
+
+Indústrias de CPG gastam fortunas em grupos focais para escolher embalagens. TrueSkill não elimina o grupo focal, mas estrutura muito melhor a coleta de dados dentro dele. Em vez de pedir avaliações abertas ou escalas, o facilitador conduz comparações diretas entre protótipos. O resultado é um ranking objetivo que saiu de uma sessão qualitativa.
+
+---
+
+## O que o TrueSkill responde — e o que ele não responde
+
+Esse ponto é importante e eu quero ser honesto sobre os limites.
+
+TrueSkill não responde: _"qual é o melhor de forma absoluta?"_
+
+Ele responde: _"com base nas comparações realizadas até agora, qual item é mais provável de ser preferido?"_
+
+Ele não substitui A/B testing quando você precisa medir impacto real em conversão ou receita. Não serve para otimizar ROAS em tempo real. O TrueSkill vive na fase de **exploração e descoberta** — antes de você ter dados suficientes e antes de saber quais candidatos valem o investimento de um teste definitivo.
+
+O fluxo ideal é:
+
+```
+TrueSkill  →  ranking de preferência com poucos dados
+     ↓
+Top 2-3 candidatos selecionados
+     ↓
+A/B Testing  →  validação com métricas reais de negócio
+```
+
+Colocado assim, o TrueSkill **barateia a fase de exploração** e **melhora a qualidade dos candidatos** que chegam ao A/B test. Os dois métodos não competem — um alimenta o outro.
+
+---
+
+## Para onde isso está indo
+
+Eu participo de plataformas de pesquisa de mercado, e sempre me incomodou que a experiência de responder pesquisas é... morna. Escalas de 1 a 5. Perguntas de múltipla escolha. Você responde, envia, não sabe o que aconteceu com sua opinião.
+
+Comparações diretas são mais engajantes, mais naturais, e — como mostrei acima — produzem dados melhores. É assim que a gente compara coisas na vida real: não avaliando itens individualmente em escalas abstratas, mas colocando opções lado a lado.
+
+Estou construindo um sistema baseado em TrueSkill para aplicar exatamente isso em pesquisas de preferência. A ideia é que você faça upload de criativos, ideias ou opções, usuários respondam comparações do tipo A vs B, e o sistema gere um ranking automático com μ e σ para cada item — com seleção inteligente de pares para minimizar o número de comparações necessárias.
+
+A arquitetura conceitual:
+
+```
+Usuário vota (A vs B)
+        ↓
+TrueSkill Engine  →  atualiza μ e σ
+        ↓
+Engine de seleção de pares  →  próximas comparações mais informativas
+        ↓
+Ranking com confiança por item
+```
+
+Antes de publicar o sistema, esse artigo vai primeiro para a lista de tarefas — quero que ele chegue junto com o lançamento, para que quem leia já possa entender o raciocínio por trás do que foi construído.
+
+Nos próximos posts vou detalhar a implementação técnica: como o algoritmo funciona em código, como estruturar a seleção inteligente de pares, e como apresentar os resultados de forma clara para quem não é estatístico.
+
+---
+
+_Se você também veio de uma curiosidade sobre como jogos ranqueiam jogadores e caiu aqui por acaso — bem-vindo ao clube. Às vezes as melhores ideias de produto vêm de perguntas que a gente faz por curiosidade, sem nenhuma intenção prática._

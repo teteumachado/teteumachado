@@ -2,11 +2,10 @@
 
 ### Technology Enthusiast & Indie Hacker based in Brazil
 
-Building digital products at the intersection of software engineering, design, and Bayesian inference. I build some projects sometime.
+I build products that help someone from time to time.
 
-- 🔭 Working on a TrueSkill-based preference ranking system
-- ⚙️ Daily use: `.ts`, `.mdx`, `.css`
-- 🌱 Learning about Bayesian inference and product-led growth
+- ⚙️ Daily use: `.ts`, `.tsx`, `.json`
+- 🌱 Learning about artificial inteligence
 - 👨‍💻 Current project: [teteumachado](https://matheusmachado.xyz) — personal portfolio and blog
 
 ### 🛠️ Skills

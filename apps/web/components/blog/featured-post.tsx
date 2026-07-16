@@ -8,7 +8,7 @@ interface Props {
 export function FeaturedPost({ post }: Props) {
   return (
     <Link href={`/blog/${post.slug}`}>
-      <article className="border rounded p-4 transition-colors hover:border-primary/30 hover:shadow-sm">
+      <article className="border p-4 transition-colors hover:border-primary/30 hover:shadow-sm">
         <span className="text-[0.6rem] uppercase tracking-wider text-muted-foreground font-medium">
           Featured
         </span>
@@ -20,7 +20,7 @@ export function FeaturedPost({ post }: Props) {
           {post.tags.map((tag) => (
             <span
               key={tag}
-              className="text-[0.6rem] px-1.5 py-0.5 rounded bg-muted text-muted-foreground"
+              className="text-[0.6rem] px-1.5 py-0.5 bg-muted text-muted-foreground"
             >
               {tag}
             </span>

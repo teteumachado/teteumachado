@@ -1,5 +1,6 @@
 'use client'
 
+import { motion } from 'framer-motion'
 import { useState, useMemo } from 'react'
 import Fuse from 'fuse.js'
 import type { PostMeta } from '@/lib/blog'
@@ -41,14 +42,28 @@ export function BlogList({ posts, featured, tags: allTags }: Props) {
 
   return (
     <div className="flex flex-col gap-4">
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: 'easeOut' }}
+        className="flex gap-2 items-center w-full"
+      >
+        <h1 className="font-serif font-bold shrink-0 text-muted-foreground">Blog</h1>
+        <motion.div
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: 1 }}
+          transition={{ duration: 0.7, delay: 0.6, ease: 'easeOut' }}
+          className="h-px flex-1 bg-muted-foreground origin-left"
+        />
+      </motion.div>
+
       <input
         type="search"
         placeholder="Search posts..."
         value={search}
         onChange={(e) => setSearch(e.target.value)}
-        className="w-full text-sm px-3 py-2 rounded border bg-transparent focus:outline-none focus:border-primary/30 transition-colors"
+        className="w-full text-sm px-3 py-2 border bg-transparent focus:outline-none focus:border-primary/30 transition-colors"
       />
-
       {allTags.length > 0 && (
         <div className="flex flex-wrap gap-1.5">
           {allTags.map((tag) => (
@@ -65,8 +80,10 @@ export function BlogList({ posts, featured, tags: allTags }: Props) {
       )}
 
       {featured.length > 0 && !search && !activeTag && (
-        <section>
-          <FeaturedPost post={featured[0]!} />
+        <section className="flex flex-col gap-3">
+          {featured.map((post) => (
+            <FeaturedPost key={post.slug} post={post} />
+          ))}
         </section>
       )}
 

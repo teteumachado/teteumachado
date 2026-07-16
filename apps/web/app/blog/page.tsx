@@ -12,10 +12,5 @@ export default function BlogPage() {
   const featured = getFeaturedPosts()
   const tags = getAllTags()
 
-  return (
-    <>
-      <h1 className="font-serif font-bold text-muted-foreground mb-6">Blog</h1>
-      <BlogList posts={posts} featured={featured} tags={tags} />
-    </>
-  )
+  return <BlogList posts={posts} featured={featured} tags={tags} />
 }

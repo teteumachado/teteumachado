@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation'
 import { getAllPosts, getPost } from '@/lib/blog'
+import Script from 'next/script'
 import type { Metadata } from 'next'
 
 interface Props {
@@ -24,6 +25,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       publishedTime: post.date,
       tags: post.tags,
     },
+    twitter: {
+      card: 'summary',
+      title: post.title,
+      description: post.description,
+    },
   }
 }
 
@@ -37,8 +43,27 @@ export default async function BlogPostPage({ params }: Props) {
   )
 
   return (
-    <article className="blog-post">
-      <Content />
-    </article>
+    <>
+      <Script
+        id="schema-article"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'Article',
+            headline: post.title,
+            description: post.description,
+            datePublished: post.date,
+            author: {
+              '@type': 'Person',
+              name: 'Matheus Machado',
+            },
+          }),
+        }}
+      />
+      <article className="blog-post">
+        <Content />
+      </article>
+    </>
   )
 }

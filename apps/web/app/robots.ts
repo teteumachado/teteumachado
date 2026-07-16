@@ -6,6 +6,6 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: '*',
       allow: '/',
     },
-    sitemap: 'https://teteumachado.com/sitemap.xml',
+    sitemap: 'https://matheusmachado.xyz/sitemap.xml',
   }
 }

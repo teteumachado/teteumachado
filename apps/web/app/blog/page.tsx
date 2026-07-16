@@ -1,7 +1,8 @@
 import { getAllPosts, getFeaturedPosts, getAllTags } from '@/lib/blog'
 import { BlogList } from '@/components/blog/blog-list'
+import { Metadata } from 'next'
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'Blog | Matheus Machado',
   description: 'Thoughts on building products, coding, and indie hacking.',
 }

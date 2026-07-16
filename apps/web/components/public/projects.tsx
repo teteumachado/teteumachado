@@ -1,9 +1,8 @@
 'use client'
+
 import { motion } from 'framer-motion'
 import { projects } from '@workspace/transactional'
 import Link from 'next/link'
-import { Button } from '@workspace/ui/components/button'
-import { IconExternalLink } from '@tabler/icons-react'
 
 export const Projects = () => {
   return (
@@ -28,22 +27,12 @@ export const Projects = () => {
       <div className="w-full max-w-sm md:max-w-md lg:max-w-lg px-3 mx-auto flex flex-col gap-2">
         {projects.map((p, i) => (
           <Link key={i} href={p.url} target="_blank">
-            <motion.div
-              whileHover={{ y: -2 }}
-              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-              className="w-full flex justify-between p-2 border rounded items-center transition-colors hover:border-primary/30 hover:shadow-sm"
-            >
+            <div className="w-full flex justify-between p-2 rounded items-center transition-colors border border-transparent hover:border hover:border-primary/30 hover:shadow-sm">
               <div className="flex flex-col gap-1">
                 <h1 className="text-xs">{p.name}</h1>
                 <h2 className="text-[0.7rem]">{p.shortDescription}</h2>
               </div>
-              <motion.span
-                whileHover={{ x: 2, y: -2, opacity: 0.7 }}
-                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-              >
-                <IconExternalLink stroke={1} size={20} />
-              </motion.span>
-            </motion.div>
+            </div>
           </Link>
         ))}
       </div>

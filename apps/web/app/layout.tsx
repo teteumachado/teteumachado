@@ -26,9 +26,6 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://matheusmachado.xyz'),
-  title: 'Matheus Machado | Technology Enthusiast',
-  description:
-    'Personal portfolio and blog of Matheus Machado — building products at the intersection of software engineering, design, and Bayesian inference.',
 }
 
 export default function RootLayout({
@@ -38,7 +35,7 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
+      lang="pt"
       suppressHydrationWarning
       className={cn(
         'antialiased',

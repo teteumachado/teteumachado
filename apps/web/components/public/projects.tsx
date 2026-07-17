@@ -1,10 +1,13 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import { useTranslations } from 'next-intl'
 import { projects } from '@workspace/transactional'
 import Link from 'next/link'
 
 export const Projects = () => {
+  const t = useTranslations('projects')
+
   return (
     <section className="w-full py-8">
       <div className="w-full max-w-sm md:max-w-md lg:max-w-lg px-3 mx-auto mb-1">
@@ -14,7 +17,7 @@ export const Projects = () => {
           transition={{ duration: 0.6, ease: 'easeOut' }}
           className="flex gap-2 items-center w-full"
         >
-          <h1 className="font-serif font-bold shrink-0 text-muted-foreground">Projects</h1>
+          <h1 className="font-serif font-bold shrink-0 text-muted-foreground">{t('title')}</h1>
           <motion.div
             initial={{ scaleX: 0 }}
             animate={{ scaleX: 1 }}

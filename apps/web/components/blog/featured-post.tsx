@@ -1,4 +1,7 @@
+'use client'
+
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 import type { PostMeta } from '@/lib/blog'
 
 interface Props {
@@ -6,11 +9,13 @@ interface Props {
 }
 
 export function FeaturedPost({ post }: Props) {
+  const t = useTranslations('blog')
+
   return (
     <Link href={`/blog/${post.slug}`}>
       <article className="border p-4 transition-colors hover:border-primary/30 hover:shadow-sm">
         <span className="text-[0.6rem] uppercase tracking-wider text-muted-foreground font-medium">
-          Featured
+          {t('featured')}
         </span>
         <h2 className="text-base font-medium mt-1">{post.title}</h2>
         <p className="text-sm text-muted-foreground mt-1">

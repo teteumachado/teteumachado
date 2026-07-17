@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion'
 import { useState, useMemo } from 'react'
 import Fuse from 'fuse.js'
+import { useTranslations } from 'next-intl'
 import type { PostMeta } from '@/lib/blog'
 import { PostCard } from '@/components/blog/post-card'
 import { FeaturedPost } from '@/components/blog/featured-post'
@@ -17,6 +18,7 @@ interface Props {
 export function BlogList({ posts, featured, tags: allTags }: Props) {
   const [search, setSearch] = useState('')
   const [activeTag, setActiveTag] = useState<string | null>(null)
+  const t = useTranslations('blog')
 
   const fuse = useMemo(
     () =>
@@ -48,7 +50,7 @@ export function BlogList({ posts, featured, tags: allTags }: Props) {
         transition={{ duration: 0.6, ease: 'easeOut' }}
         className="flex gap-2 items-center w-full"
       >
-        <h1 className="font-serif font-bold shrink-0 text-muted-foreground">Blog</h1>
+        <h1 className="font-serif font-bold shrink-0 text-muted-foreground">{t('title')}</h1>
         <motion.div
           initial={{ scaleX: 0 }}
           animate={{ scaleX: 1 }}
@@ -59,7 +61,7 @@ export function BlogList({ posts, featured, tags: allTags }: Props) {
 
       <input
         type="search"
-        placeholder="Search posts..."
+        placeholder={t('search')}
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         className="w-full text-sm px-3 py-2 border bg-transparent focus:outline-none focus:border-primary/30 transition-colors"
@@ -95,7 +97,7 @@ export function BlogList({ posts, featured, tags: allTags }: Props) {
 
       {filtered.length === 0 && (
         <p className="text-sm text-muted-foreground text-center py-8">
-          No posts found.
+          {t('noPosts')}
         </p>
       )}
     </div>

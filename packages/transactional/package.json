@@ -8,6 +8,8 @@
     ".": "./source/index.ts",
     "./constants": "./source/constants/index.ts",
     "./articles": "./source/articles/index.ts",
+    "./articles/pt": "./source/articles/pt/index.ts",
+    "./articles/en": "./source/articles/en/index.ts",
     "./articles/*": "./source/articles/*"
   },
   "scripts": {

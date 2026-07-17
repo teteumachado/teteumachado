@@ -2,18 +2,25 @@ import { notFound } from 'next/navigation'
 import { getAllPosts, getPost } from '@/lib/blog'
 import Script from 'next/script'
 import type { Metadata } from 'next'
+import { mdxModules as ptMdx } from '@workspace/transactional/articles/pt'
+import { mdxModules as enMdx } from '@workspace/transactional/articles/en'
 
 interface Props {
-  params: Promise<{ slug: string }>
+  params: Promise<{ slug: string; locale: string }>
 }
 
 export async function generateStaticParams() {
-  return getAllPosts().map((post) => ({ slug: post.slug }))
+  const ptPosts = getAllPosts('pt')
+  const enPosts = getAllPosts('en')
+  return [
+    ...ptPosts.map((post) => ({ slug: post.slug, locale: 'pt' })),
+    ...enPosts.map((post) => ({ slug: post.slug, locale: 'en' })),
+  ]
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params
-  const post = getPost(slug)
+  const { slug, locale } = await params
+  const post = getPost(slug, locale)
   if (!post) return {}
   return {
     title: post.title,
@@ -34,13 +41,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function BlogPostPage({ params }: Props) {
-  const { slug } = await params
-  const post = getPost(slug)
+  const { slug, locale } = await params
+  const post = getPost(slug, locale)
   if (!post) notFound()
 
-  const { default: Content } = await import(
-    `@workspace/transactional/articles/${slug}.mdx`
-  )
+  const modules = locale === 'en' ? enMdx : ptMdx
+  const Content = (modules as Record<string, any>)[slug]
+  if (!Content) notFound()
 
   return (
     <>

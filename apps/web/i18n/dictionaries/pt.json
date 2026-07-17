@@ -1,0 +1,41 @@
+{
+  "site": {
+    "title": "Matheus Machado",
+    "subtitle": "Entusiasta de Tecnologia",
+    "description": "Portfólio pessoal e blog de Matheus Machado — construindo produtos na interseção entre engenharia de software, design e inferência Bayesiana."
+  },
+  "nav": {
+    "home": "Início",
+    "blog": "Blog"
+  },
+  "hero": {
+    "title": "Sobre mim",
+    "bio": "Sou de Aracaju, Brasil, e construo produtos e ferramentas do zero — do primeiro commit ao primeiro pagante. Prefiro resolver problemas de forma barata e eficiente a adicionar complexidade onde não é necessário. Hoje trabalho com Next.js e Node, aplicando isso a produtos com inteligência artificial."
+  },
+  "projects": {
+    "title": "Projetos"
+  },
+  "blog": {
+    "title": "Blog",
+    "search": "Pesquisar posts...",
+    "noPosts": "Nenhum post encontrado.",
+    "viewAll": "Ver todos os posts →",
+    "featured": "Destaque",
+    "readingTime": "{min} min de leitura"
+  },
+  "notFound": {
+    "title": "Página não encontrada",
+    "link": "Voltar ao início →"
+  },
+  "theme": {
+    "light": "Claro",
+    "dark": "Escuro"
+  },
+  "language": {
+    "pt": "Português",
+    "en": "English"
+  },
+  "latestPosts": {
+    "title": "Últimos Posts"
+  }
+}

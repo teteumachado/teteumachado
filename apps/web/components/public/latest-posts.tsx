@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 import type { PostMeta } from '@/lib/blog'
 
 interface Props {
@@ -9,6 +10,9 @@ interface Props {
 }
 
 export const LatestPosts = ({ posts }: Props) => {
+  const t = useTranslations('latestPosts')
+  const blogT = useTranslations('blog')
+
   return (
     <section className="w-full py-8">
       <div className="w-full max-w-sm md:max-w-md lg:max-w-lg px-3 mx-auto mb-1">
@@ -18,7 +22,7 @@ export const LatestPosts = ({ posts }: Props) => {
           transition={{ duration: 0.6, ease: 'easeOut' }}
           className="flex gap-2 items-center w-full"
         >
-          <h1 className="font-serif font-bold shrink-0 text-muted-foreground">Recent Posts</h1>
+          <h1 className="font-serif font-bold shrink-0 text-muted-foreground">{t('title')}</h1>
           <motion.div
             initial={{ scaleX: 0 }}
             animate={{ scaleX: 1 }}
@@ -44,7 +48,7 @@ export const LatestPosts = ({ posts }: Props) => {
           href="/blog"
           className="text-[0.7rem] text-muted-foreground hover:text-foreground transition-colors text-center pt-1"
         >
-          View all posts →
+          {blogT('viewAll')}
         </Link>
       </div>
     </section>

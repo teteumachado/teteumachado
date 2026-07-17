@@ -1,11 +1,15 @@
 'use client'
 
 import { usePathname, useRouter } from '@/i18n/navigation'
-import { useLocale, useTranslations } from 'next-intl'
+import { useLocale } from 'next-intl'
 import { useTransition } from 'react'
+import { Button, ButtonProps } from '@workspace/ui/components/button'
 
-export function LanguageSwitcher() {
-  const t = useTranslations('language')
+export const LanguageSwitcher = ({
+  variant = 'ghost',
+  className,
+  ...props
+}: Partial<ButtonProps>) => {
   const locale = useLocale()
   const pathname = usePathname()
   const router = useRouter()
@@ -19,12 +23,17 @@ export function LanguageSwitcher() {
   }
 
   return (
-    <button
+    <Button
+      variant={variant}
+      size="icon-lg"
       onClick={toggle}
+      className={className}
       disabled={isPending}
-      className="text-xs text-muted-foreground hover:text-foreground transition-colors font-mono uppercase tracking-wider"
+      {...props}
     >
-      {locale === 'pt' ? 'EN' : 'PT'}
-    </button>
+      <span className="text-xs font-mono">
+        {locale === 'pt' ? 'EN' : 'PT'}
+      </span>
+    </Button>
   )
 }

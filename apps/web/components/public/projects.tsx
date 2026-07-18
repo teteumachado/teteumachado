@@ -29,18 +29,35 @@ export const Projects = () => {
         </motion.div>
       </div>
 
-      <div className="mx-auto flex w-full max-w-sm flex-col gap-2 px-3 md:max-w-md lg:max-w-lg">
+      <motion.div
+        variants={{
+          hidden: {},
+          visible: { transition: { staggerChildren: 0.07 } },
+        }}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: '-40px' }}
+        className="mx-auto flex w-full max-w-sm flex-col gap-2 px-3 md:max-w-md lg:max-w-lg"
+      >
         {projects.map((p, i) => (
-          <Link key={i} href={p.url} target="_blank">
-            <div className="flex w-full items-center justify-between rounded border border-transparent p-2 transition-colors hover:border hover:border-primary/30 hover:shadow-sm">
-              <div className="flex flex-col gap-1">
-                <h1 className="text-xs font-bold">{p.name}</h1>
-                <h2 className="text-[0.7rem]">{p.shortDescription}</h2>
+          <motion.div
+            key={i}
+            variants={{
+              hidden: { opacity: 0, y: 12 },
+              visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: 'easeOut' } },
+            }}
+          >
+            <Link href={p.url} target="_blank">
+              <div className="flex w-full items-center justify-between rounded border border-transparent p-2 transition-colors hover:border hover:border-primary/30 hover:shadow-sm">
+                <div className="flex flex-col gap-1">
+                  <h1 className="text-xs font-bold">{p.name}</h1>
+                  <h2 className="text-[0.7rem]">{p.shortDescription}</h2>
+                </div>
               </div>
-            </div>
-          </Link>
+            </Link>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
     </section>
   )
 }

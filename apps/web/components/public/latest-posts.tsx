@@ -34,25 +34,49 @@ export const LatestPosts = ({ posts }: Props) => {
         </motion.div>
       </div>
 
-      <div className="mx-auto flex w-full max-w-sm flex-col gap-2 px-3 md:max-w-md lg:max-w-lg">
+      <motion.div
+        variants={{
+          hidden: {},
+          visible: { transition: { staggerChildren: 0.07 } },
+        }}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: '-40px' }}
+        className="mx-auto flex w-full max-w-sm flex-col gap-2 px-3 md:max-w-md lg:max-w-lg"
+      >
         {posts.map((post) => (
-          <Link key={post.slug} href={`/blog/${post.slug}`}>
-            <div className="flex w-full items-center justify-between rounded border border-transparent p-2 transition-colors hover:border hover:border-primary/30 hover:shadow-sm">
-              <div className="flex min-w-0 flex-col gap-1">
-                <h1 className="truncate text-xs font-bold">{post.title}</h1>
-                <h2 className="truncate text-[0.7rem]">{post.description}</h2>
+          <motion.div
+            key={post.slug}
+            variants={{
+              hidden: { opacity: 0, y: 12 },
+              visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: 'easeOut' } },
+            }}
+          >
+            <Link key={post.slug} href={`/blog/${post.slug}`}>
+              <div className="flex w-full items-center justify-between rounded border border-transparent p-2 transition-colors hover:border hover:border-primary/30 hover:shadow-sm">
+                <div className="flex min-w-0 flex-col gap-1">
+                  <h1 className="truncate text-xs font-bold">{post.title}</h1>
+                  <h2 className="truncate text-[0.7rem]">{post.description}</h2>
+                </div>
               </div>
-            </div>
-          </Link>
+            </Link>
+          </motion.div>
         ))}
 
-        <Link
-          href="/blog"
-          className="pt-1 text-center text-[0.7rem] text-muted-foreground transition-colors hover:text-foreground"
+        <motion.div
+          variants={{
+            hidden: { opacity: 0, y: 12 },
+            visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: 'easeOut' } },
+          }}
         >
-          {blogT('viewAll')}
-        </Link>
-      </div>
+          <Link
+            href="/blog"
+            className="pt-1 text-center text-[0.7rem] text-muted-foreground transition-colors hover:text-foreground"
+          >
+            {blogT('viewAll')}
+          </Link>
+        </motion.div>
+      </motion.div>
     </section>
   )
 }

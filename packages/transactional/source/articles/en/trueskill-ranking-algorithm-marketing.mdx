@@ -1,0 +1,184 @@
+---
+title: 'TrueSkill — What I learned trying to understand how games rank players (and how it turned into a marketing project)'
+description: 'How a probabilistic algorithm from Microsoft Research for ranking Xbox Live players inspired a market preference research system — and why direct comparisons beat abstract scales.'
+date: 2026-07-16
+tags: [product, algorithms, marketing]
+featured: true
+---
+
+# TrueSkill — What I learned trying to understand how games rank players (and how it turned into a marketing project)
+
+It all started with a silly curiosity: how does online game matchmaking ranking actually work?
+
+Not the surface-level explanation of "you gain points when you win and lose them when you lose." I wanted to understand the mechanism underneath — why some games raise your rank even when you lose, why the system's uncertainty shrinks over time, why everything feels chaotic at the start of an account and then stabilizes.
+
+When I dug deep, I found **TrueSkill** — a probabilistic algorithm created by Microsoft Research for ranking players on Xbox Live. And when I understood how it worked, I had one of those "wait, this isn't just for games" moments.
+
+It works for marketing. It works really well.
+
+---
+
+## The problem I didn't know existed
+
+Before I get to the solution, I need to tell you what the problem is.
+
+There's a silent gap in almost every market preference research: the methods we use were built to measure objective things — conversion, clicks, revenue. When we apply them to understand _which creative people prefer_, or _which product name resonates more_, we're using the wrong tool for the wrong job.
+
+Let me show you where each method breaks.
+
+### A/B Testing
+
+It's the darling of performance marketing, and for good reason — for final decisions with concrete metrics it's unbeatable. But when the goal is to _explore preferences across many items_, it has serious limitations:
+
+- You test **two variants at a time**. To compare 10 creatives rigorously, you'd need dozens of sequential rounds.
+- It requires **high traffic volumes** to reach statistical significance.
+- It's **inherently slow** — each round needs exposure time and data collection.
+- It doesn't produce a **global ranking**: it answers "A or B?", not "which of the ten is best?"
+
+### Multi-Armed Bandits
+
+Bandits are brilliant for **production optimization** — maximizing conversion in real time while still exploring. But they weren't built for structured research:
+
+- The goal is to maximize performance, not _understand_ preference.
+- They don't produce a clear, interpretable ranking at the end.
+- The exploration is too dynamic for anyone who needs a structured answer to present to a client or team.
+
+### Forms and scales (Likert, NPS)
+
+Asking someone to rate a creative from 1 to 5 seems simple. The problem is it produces noisy data. People calibrate scales in completely different ways — one person's enthusiastic "4" is another's lukewarm "3". And comparing averages of items rated at different times is methodologically problematic.
+
+---
+
+## What TrueSkill does differently
+
+TrueSkill is a **probabilistic ranking algorithm based on direct comparisons**. The premise is elegant:
+
+> Instead of asking for absolute ratings, the system learns through comparisons — A or B? — and reconstructs a global ranking from those preferences.
+
+This is exactly what happens in matchmaking. The system doesn't ask you to rate your skill from 1 to 10. It puts you in games against other players, observes who wins, and _infers_ your skill from those comparisons.
+
+### Two numbers that carry everything
+
+Each item in the system is represented by two parameters:
+
+|Parameter|What it represents|
+|---|---|
+|**μ (mu)**|Estimated quality — position in the ranking|
+|**σ (sigma)**|Uncertainty of that estimate — how much we still don't know|
+
+This duo changes everything. It allows the system to distinguish completely different situations:
+
+|Profile|What it means in practice|
+|---|---|
+|High μ + Low σ|Strong item, well validated, high confidence|
+|High μ + High σ|Seems good, but hasn't been tested much|
+|Low μ + High σ|Unknown — needs more comparisons before judging|
+|Low μ + Low σ|Consistently weak — the system is certain|
+
+A system that only stored μ would throw away critical information. The σ is what turns a static ranking into a living model that knows what it doesn't yet know.
+
+### How learning happens
+
+The flow from the user's perspective is simple:
+
+```
+User compares A vs B
+        ↓
+System records the preference
+        ↓
+TrueSkill updates μ and σ for both items
+        ↓
+Global ranking is recalculated
+        ↓
+System picks the next most informative pairs
+```
+
+With each comparison, the algorithm uses Bayesian inference to update its beliefs. Intuitively: if A beats B and B was considered strong, A's μ goes up significantly. If A beats an item already considered weak, the gain is smaller. The system weighs the information from each match.
+
+And here's a detail few people mention: the system can **intelligently choose which pairs to compare**. Instead of testing every possible combination, it prioritizes the most informative matchups — where uncertainty is highest or where μ values are closest. The result: you rank dozens of items with a surprisingly small number of comparisons.
+
+---
+
+## Where it really shines — with real use cases
+
+After understanding the algorithm, I started mapping where it makes the most sense. These are the contexts where TrueSkill clearly wins over traditional methods:
+
+### 1. Creative triage before A/B testing
+
+Your design team produced 15 variations of a banner. You don't have the budget or time to put them all in an A/B test. With TrueSkill, you show pairs to a small panel — 20, 30 people — and in just a few rounds you already have a ranking with confidence levels per item. The top two or three go into the real A/B test.
+
+The algorithm worked as an **intelligent triage funnel**: cheap, fast, and based on real comparison instead of abstract rating.
+
+### 2. Product or brand name research
+
+Traditional naming research asks people to rate names on a 1–5 scale. The problem: people use scales differently, and comparing averages of items rated at different times is methodologically weak.
+
+With TrueSkill, you simply ask "which of these two names resonates more with you?" repeatedly. The emerging ranking is far more reliable because it's _relative_ — the person doesn't need to calibrate an abstract scale, they just need to choose.
+
+### 3. Product feature prioritization
+
+Product teams often decide what to build through post-it voting or priority forms — both with serious bias and inconsistency issues. TrueSkill lets stakeholders make direct comparisons: "feature A or feature B is more important for the user?"
+
+The result is a priority ranking with explicit uncertainty. Where σ is still high, you know exactly where you need more input before deciding.
+
+### 4. Content curation with audience preference
+
+A publication that wants to understand what its audience prefers — before having enough volume to train models — can use TrueSkill to collect preferences from a small group of readers and already have a robust ranking. Formats, topics, text depth, narrative approach — everything is rankable with just a few sessions.
+
+### 5. Packaging or physical design selection
+
+CPG industries spend fortunes on focus groups to choose packaging. TrueSkill doesn't eliminate the focus group, but it structures data collection much better within it. Instead of asking for open-ended ratings or scales, the facilitator conducts direct comparisons between prototypes. The result is an objective ranking that came out of a qualitative session.
+
+---
+
+## What TrueSkill answers — and what it doesn't
+
+This point is important and I want to be honest about the limits.
+
+TrueSkill does not answer: _"what is the absolute best?"_
+
+It answers: _"based on the comparisons made so far, which item is most likely to be preferred?"_
+
+It doesn't replace A/B testing when you need to measure real impact on conversion or revenue. It's not for optimizing ROAS in real time. TrueSkill lives in the **exploration and discovery** phase — before you have enough data and before you know which candidates are worth the investment of a definitive test.
+
+The ideal flow is:
+
+```
+TrueSkill  →  preference ranking with little data
+     ↓
+Top 2-3 candidates selected
+     ↓
+A/B Testing  →  validation with real business metrics
+```
+
+Put that way, TrueSkill **lowers the cost of exploration** and **improves the quality of candidates** that reach the A/B test. The two methods don't compete — they feed each other.
+
+---
+
+## Where this is going
+
+I participate in market research platforms, and it's always bothered me that the survey-taking experience is... lukewarm. 1–5 scales. Multiple choice questions. You answer, submit, and never know what happened to your opinion.
+
+Direct comparisons are more engaging, more natural, and — as I showed above — produce better data. This is how we compare things in real life: not by rating items individually on abstract scales, but by putting options side by side.
+
+I'm building a system based on TrueSkill to apply exactly this to preference research. The idea is that you upload creatives, ideas, or options, users respond to A vs B comparisons, and the system generates an automatic ranking with μ and σ for each item — with intelligent pair selection to minimize the number of comparisons needed.
+
+The conceptual architecture:
+
+```
+User votes (A vs B)
+        ↓
+TrueSkill Engine  →  updates μ and σ
+        ↓
+Pair selection engine  →  next most informative comparisons
+        ↓
+Ranking with confidence per item
+```
+
+Before publishing the system, this article goes to the task list first — I want it to arrive together with the launch, so that whoever reads it can already understand the reasoning behind what was built.
+
+In the next posts I'll detail the technical implementation: how the algorithm works in code, how to structure intelligent pair selection, and how to present the results clearly for non-statisticians.
+
+---
+
+_If you also came from a curiosity about how games rank players and ended up here by accident — welcome to the club. Sometimes the best product ideas come from questions you ask out of curiosity, with no practical intention at all._

@@ -37,5 +37,15 @@
   },
   "latestPosts": {
     "title": "Últimos Posts"
+  },
+  "auth": {
+    "login": {
+      "title": "Login",
+      "email": "Email",
+      "password": "Senha",
+      "signIn": "Entrar",
+      "success": "Login realizado com sucesso.",
+      "error": "Email ou senha inválidos."
+    }
   }
 }

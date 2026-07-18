@@ -3,6 +3,7 @@ import Script from 'next/script'
 
 import '@workspace/ui/globals.css'
 import { ThemeProvider } from '@/components/theme-provider'
+import { Toaster } from '@workspace/ui/components/sonner'
 import { cn } from '@workspace/ui/lib/utils'
 import type { Metadata } from 'next'
 
@@ -74,7 +75,10 @@ export default function RootLayout({
             }),
           }}
         />
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          {children}
+          <Toaster />
+        </ThemeProvider>
       </body>
     </html>
   )

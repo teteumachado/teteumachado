@@ -24,6 +24,7 @@
     "zod": "^4.4.3"
   },
   "dependencies": {
+    "@fastify/cors": "^11.3.0",
     "@workspace/auth": "workspace:*",
     "@workspace/database": "workspace:*",
     "fastify": "^5.10.0"

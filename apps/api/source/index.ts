@@ -1,8 +1,11 @@
 import Fastify from 'fastify'
+import cors from '@fastify/cors'
 import { env } from '@config'
 import { authPlugin } from './plugins/auth.js'
 
 const app = Fastify()
+
+await app.register(cors, { origin: env.CORS_ORIGIN })
 
 app.get('/health', async () => {
   return { status: 'ok' }

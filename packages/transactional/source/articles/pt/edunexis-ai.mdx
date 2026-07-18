@@ -1,0 +1,89 @@
+---
+title: 'Edunexis — Como um projeto de Python virou um extrator de questões de vestibular alimentado por IA'
+description: 'Como usei Google Gemini para extrair questões de vestibulares brasileiros de PDFs — mesmo sem programar em Python.'
+date: 2026-07-17
+tags: [python, ai, projects]
+featured: true
+---
+
+# Edunexis — Como um projeto de Python virou um extrator de questões de vestibular alimentado por IA
+
+Tudo começou com uma necessidade simples: eu queria montar um banco de questões de vestibular.
+
+Não um banco qualquer — algo estruturado, com as alternativas separadas, o gabarito identificado, a matéria categorizada. Dados limpos que dessem para consumir programaticamente.
+
+O problema é que questões de vestibular existem em PDF. Centenas de PDFs. Cada um com um formato diferente. ENEM, FUVEST, UNICAMP, vestibulares regionais — cada banca tem seu próprio layout, sua própria fonte, sua própria bagunça.
+
+Extrair isso manualmente levaria semanas. E eu queria uma resposta rápida.
+
+## A abordagem: IA como cérebro da extração
+
+A ideia foi direta ao ponto: em vez de tentar fazer parsing inteligente de PDF (que quebra com qualquer mudança de layout), por que não deixar que um modelo de IA lesse a página e extraísse as questões diretamente?
+
+O fluxo ficou assim:
+
+```
+PDF  →  extrair texto e imagem da página
+                ↓
+    Enviar texto + imagem para o Gemini
+                ↓
+    Gemini retorna JSON estruturado
+                ↓
+    Salvar como arquivo .json
+```
+
+O segredo está no prompt. Em vez de tentar ensinar o modelo a reconhecer todos os formatos de prova possíveis, eu escrevi um sistema de instruções detalhado que cobre os casos mais comuns: alternativas no formato `a)`, `A)`, `(a)`, `I.`, `II.`, questões com enunciado longo, questões com texto de apoio, e assim por diante.
+
+## O pipeline em detalhe
+
+O processo tem três estágios, com fallback automático:
+
+### 1. Extração de texto
+
+Para PDFs digitais (com texto embutido), uso `pdfplumber` — é rápido e preciso. Para PDFs scaneados (imagens), o sistema cai automaticamente para OCR com `pytesseract`, configurado para português.
+
+Essa dupla cobre praticamente qualquer PDF que apareça.
+
+### 2. Extração estruturada via Gemini
+
+A página é enviada para o Google Gemini em modo multimodal — tanto o texto extraído quanto a imagem da página. Isso é importante porque às vezes o layout carrega informação que o texto plano perde.
+
+O prompt instrui o modelo a retornar um JSON seguindo um schema específico:
+
+| Campo | O que é |
+|---|---|
+| `exam_board` | Banca (ENEM, FUVEST, etc.) |
+| `prompt` | Enunciado da questão |
+| `choices` | Alternativas (letra + texto) |
+| `correct_answer` | Gabarito (se explicitamente indicado) |
+| `subject` | Matéria inferida |
+| `year` | Ano da prova |
+| `tags` | Palavras-chave |
+
+### 3. Validação e saída
+
+O JSON gerado é validado contra schemas Pydantic e salvo em um arquivo `.json` com o mesmo nome do PDF de origem.
+
+## Para ser honesto
+
+Esse projeto é um **caso de estudo**. Eu não programo em Python — sou desenvolvedor web (TypeScript, React, Node.js). Python não é minha praia, e isso aparece em vários lugares do código: escolhas não-idiomáticas, estrutura que um pythonista experiente organizaria diferente, talvez até alguns bugs que ainda não encontrei.
+
+A primeira versão funciona, mas tem limitações reais. PDFs com layout muito complexo ainda confundem o modelo. Questões que misturam texto de apoio longo com alternativas curtas às vezes são mal interpretadas. A extração de gabarito depende de como a prova indica a resposta — e cada banca faz isso de um jeito.
+
+A nova versão já está em desenvolvimento e vai resolver boa parte desses problemas.
+
+## O que eu aprendi
+
+Construir o Edunexis me mostrou algumas coisas:
+
+1. **IA é um ótimo equalizador** — Consegui construir algo em uma linguagem que não domino, porque o "cérebro" do sistema é o modelo, não meu código. Meu código só orquestra.
+
+2. **Prompt engineering é a nova interface** — A qualidade do resultado depende mais do prompt do que do código. Gastar tempo refinando as instruções para o modelo rende muito mais do que tentar fazer parsing perfeito.
+
+3. **PDF é um formato hostil** — Não importa quão bom seja seu pipeline, PDF vai sempre dar trabalho. A melhor estratégia é aceitar a imperfeição e construir fallbacks.
+
+4. **Projetos de estudo são subestimados** — Às vezes o melhor jeito de aprender algo novo é ter um problema real para resolver, mesmo que a solução não seja perfeita. O Edunexis me forçou a entender o suficiente de Python para fazer algo útil, e isso já valeu o esforço.
+
+---
+
+_Edunexis é open source e está no [GitHub](https://github.com/teteumachado/edunexis-ai). Se você também tem um problema que parece pedir uma solução em uma linguagem que você não domina — talvez a IA possa te ajudar a pular essa barreira._

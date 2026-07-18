@@ -13,4 +13,11 @@ export const projects: Project[] = [
     shortDescription: 'Sistema de pesquisas de prefereência baseado em TrueSkill',
     url: 'https://github.com/teteumachado/trueskill-preference-research',
   },
+  {
+    name: 'Edunexis AI',
+    description:
+      'Extrator de questões de vestibulares brasileiros de PDFs utilizando Google Gemini para extração estruturada em JSON.',
+    shortDescription: 'Extrator de questões de vestibulares de PDFs via IA',
+    url: 'https://github.com/teteumachado/edunexis-ai',
+  },
 ]

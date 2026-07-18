@@ -20,9 +20,7 @@ export const PhotosCarousel = () => {
   return (
     <Carousel
       opts={{ loop: true }}
-      plugins={[
-        Autoplay({ delay: 4000, stopOnInteraction: false }),
-      ]}
+      plugins={[Autoplay({ delay: 4000, stopOnInteraction: false })]}
     >
       <CarouselContent>
         {photos.map((photo) => (
@@ -32,7 +30,7 @@ export const PhotosCarousel = () => {
               alt={photo.alt}
               width={800}
               height={600}
-              className="w-full aspect-[4/3] object-cover rounded-xl"
+              className="aspect-[4/3] w-full rounded-xl object-cover"
             />
           </CarouselItem>
         ))}

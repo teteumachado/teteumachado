@@ -2,15 +2,15 @@ import Link from 'next/link'
 
 export default function GlobalNotFound() {
   return (
-    <div className="w-full flex flex-col items-center justify-center min-h-screen">
+    <div className="flex min-h-screen w-full flex-col items-center justify-center">
       <main className="text-center">
-        <h1 className="font-serif font-bold text-4xl text-muted-foreground mb-4">
+        <h1 className="mb-4 font-serif text-4xl font-bold text-muted-foreground">
           404
         </h1>
-        <p className="text-sm text-muted-foreground mb-6">Page not found.</p>
+        <p className="mb-6 text-sm text-muted-foreground">Page not found.</p>
         <Link
           href="/"
-          className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+          className="text-sm text-muted-foreground transition-colors hover:text-foreground"
         >
           Go back home →
         </Link>

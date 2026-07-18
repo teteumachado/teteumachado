@@ -10,27 +10,29 @@ export const Projects = () => {
 
   return (
     <section className="w-full py-8">
-      <div className="w-full max-w-sm md:max-w-md lg:max-w-lg px-3 mx-auto mb-1">
+      <div className="mx-auto mb-1 w-full max-w-sm px-3 md:max-w-md lg:max-w-lg">
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: 'easeOut' }}
-          className="flex gap-2 items-center w-full"
+          className="flex w-full items-center gap-2"
         >
-          <h1 className="font-serif font-bold shrink-0 text-muted-foreground">{t('title')}</h1>
+          <h1 className="shrink-0 font-serif font-bold text-muted-foreground">
+            {t('title')}
+          </h1>
           <motion.div
             initial={{ scaleX: 0 }}
             animate={{ scaleX: 1 }}
             transition={{ duration: 0.7, delay: 0.6, ease: 'easeOut' }}
-            className="h-px flex-1 bg-muted-foreground origin-left"
+            className="h-px flex-1 origin-left bg-muted-foreground"
           />
         </motion.div>
       </div>
 
-      <div className="w-full max-w-sm md:max-w-md lg:max-w-lg px-3 mx-auto flex flex-col gap-2">
+      <div className="mx-auto flex w-full max-w-sm flex-col gap-2 px-3 md:max-w-md lg:max-w-lg">
         {projects.map((p, i) => (
           <Link key={i} href={p.url} target="_blank">
-            <div className="w-full flex justify-between p-2 rounded items-center transition-colors border border-transparent hover:border hover:border-primary/30 hover:shadow-sm">
+            <div className="flex w-full items-center justify-between rounded border border-transparent p-2 transition-colors hover:border hover:border-primary/30 hover:shadow-sm">
               <div className="flex flex-col gap-1">
                 <h1 className="text-xs font-bold">{p.name}</h1>
                 <h2 className="text-[0.7rem]">{p.shortDescription}</h2>

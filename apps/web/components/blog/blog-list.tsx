@@ -26,7 +26,7 @@ export function BlogList({ posts, featured, tags: allTags }: Props) {
         keys: ['title', 'description', 'tags'],
         threshold: 0.3,
       }),
-    [posts],
+    [posts]
   )
 
   const filtered = useMemo(() => {
@@ -48,14 +48,16 @@ export function BlogList({ posts, featured, tags: allTags }: Props) {
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
-        className="flex gap-2 items-center w-full"
+        className="flex w-full items-center gap-2"
       >
-        <h1 className="font-serif font-bold shrink-0 text-muted-foreground">{t('title')}</h1>
+        <h1 className="shrink-0 font-serif font-bold text-muted-foreground">
+          {t('title')}
+        </h1>
         <motion.div
           initial={{ scaleX: 0 }}
           animate={{ scaleX: 1 }}
           transition={{ duration: 0.7, delay: 0.6, ease: 'easeOut' }}
-          className="h-px flex-1 bg-muted-foreground origin-left"
+          className="h-px flex-1 origin-left bg-muted-foreground"
         />
       </motion.div>
 
@@ -64,7 +66,7 @@ export function BlogList({ posts, featured, tags: allTags }: Props) {
         placeholder={t('search')}
         value={search}
         onChange={(e) => setSearch(e.target.value)}
-        className="w-full text-sm px-3 py-2 border bg-transparent focus:outline-none focus:border-primary/30 transition-colors"
+        className="w-full border bg-transparent px-3 py-2 text-sm transition-colors focus:border-primary/30 focus:outline-none"
       />
       {allTags.length > 0 && (
         <div className="flex flex-wrap gap-1.5">
@@ -73,9 +75,7 @@ export function BlogList({ posts, featured, tags: allTags }: Props) {
               key={tag}
               tag={tag}
               active={activeTag === tag}
-              onClick={() =>
-                setActiveTag(activeTag === tag ? null : tag)
-              }
+              onClick={() => setActiveTag(activeTag === tag ? null : tag)}
             />
           ))}
         </div>
@@ -89,14 +89,14 @@ export function BlogList({ posts, featured, tags: allTags }: Props) {
         </section>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
         {(search || activeTag ? filtered : nonFeatured).map((post) => (
           <PostCard key={post.slug} post={post} />
         ))}
       </div>
 
       {filtered.length === 0 && (
-        <p className="text-sm text-muted-foreground text-center py-8">
+        <p className="py-8 text-center text-sm text-muted-foreground">
           {t('noPosts')}
         </p>
       )}

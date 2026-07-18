@@ -13,7 +13,7 @@ export const ThemeSwitcher = ({
   const { theme, setTheme } = useTheme()
 
   const handleSetTheme = () => {
-    setTheme(theme == 'light' && 'dark' || 'light')
+    setTheme((theme == 'light' && 'dark') || 'light')
   }
 
   return (
@@ -24,11 +24,7 @@ export const ThemeSwitcher = ({
       onClick={() => handleSetTheme()}
       {...props}
     >
-      {theme == 'light' && (
-        <IconSunHigh />
-      ) || (
-        <IconMoonFilled />
-      )}
+      {(theme == 'light' && <IconSunHigh />) || <IconMoonFilled />}
     </Button>
   )
 }

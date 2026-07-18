@@ -42,7 +42,7 @@ export default function RootLayout({
         montserrat.variable,
         fontMono.variable,
         merriweather.variable,
-        geistMono.variable,
+        geistMono.variable
       )}
     >
       <body>

@@ -22,7 +22,7 @@ function articlesDir(locale: string) {
     'transactional',
     'source',
     'articles',
-    locale,
+    locale
   )
 }
 
@@ -35,9 +35,7 @@ function getPostMeta(slug: string, locale: string): PostMeta | null {
     const { data, content } = matter(source)
     const rt = readingTime(content)
     const readingTimeText =
-      locale === 'pt'
-        ? `${Math.ceil(rt.minutes)} min de leitura`
-        : rt.text
+      locale === 'pt' ? `${Math.ceil(rt.minutes)} min de leitura` : rt.text
     return {
       slug,
       title: data.title || slug,

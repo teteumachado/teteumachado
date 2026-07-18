@@ -6,9 +6,9 @@ export default function BlogLayout({
   children: React.ReactNode
 }) {
   return (
-    <div className="w-full flex flex-col items-center">
+    <div className="flex w-full flex-col items-center">
       <Header />
-      <main className="w-full max-w-sm md:max-w-md lg:max-w-lg px-3 mx-auto py-8">
+      <main className="mx-auto w-full max-w-sm px-3 py-8 md:max-w-md lg:max-w-lg">
         {children}
       </main>
     </div>

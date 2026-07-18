@@ -31,9 +31,7 @@ export const LanguageSwitcher = ({
       disabled={isPending}
       {...props}
     >
-      <span className="text-xs font-mono">
-        {locale === 'pt' ? 'EN' : 'PT'}
-      </span>
+      <span className="font-mono text-xs">{locale === 'pt' ? 'EN' : 'PT'}</span>
     </Button>
   )
 }

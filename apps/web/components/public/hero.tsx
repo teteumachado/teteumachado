@@ -8,19 +8,21 @@ export const Hero = () => {
   const t = useTranslations('hero')
 
   return (
-    <div className="w-full max-w-sm md:max-w-md lg:max-w-lg p-3 mx-auto my-5">
+    <div className="mx-auto my-5 w-full max-w-sm p-3 md:max-w-md lg:max-w-lg">
       <motion.div
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
-        className="flex gap-2 items-center w-full"
+        className="flex w-full items-center gap-2"
       >
-        <h1 className="font-serif font-bold shrink-0 text-muted-foreground">{t('title')}</h1>
+        <h1 className="shrink-0 font-serif font-bold text-muted-foreground">
+          {t('title')}
+        </h1>
         <motion.div
           initial={{ scaleX: 0 }}
           animate={{ scaleX: 1 }}
           transition={{ duration: 0.7, delay: 0.6, ease: 'easeOut' }}
-          className="h-px flex-1 bg-muted-foreground origin-left"
+          className="h-px flex-1 origin-left bg-muted-foreground"
         />
       </motion.div>
       <motion.h2

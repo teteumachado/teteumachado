@@ -5,20 +5,24 @@ import Link from 'next/link'
 const socials = [
   {
     url: 'https://instagram.com/mmatheusmachado',
-    icon: <IconBrandInstagramFilled />
+    icon: <IconBrandInstagramFilled />,
   },
   {
     url: 'https://x.com/teteurocha28',
-    icon: <IconBrandX />
-  }
+    icon: <IconBrandX />,
+  },
 ]
 
 export const Socials = () => {
   return (
-    <div className="flex gap-2 items-center">
-      {socials.map(s => (
+    <div className="flex items-center gap-2">
+      {socials.map((s) => (
         <Link href={s.url} key={s.url}>
-          <Button size="icon-lg" variant="ghost" className="transition-transform hover:scale-110 active:scale-95">
+          <Button
+            size="icon-lg"
+            variant="ghost"
+            className="transition-transform hover:scale-110 active:scale-95"
+          >
             {s.icon}
           </Button>
         </Link>

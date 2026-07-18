@@ -6,7 +6,7 @@ const PublicLayout = ({
   children: React.ReactNode
 }>) => {
   return (
-    <div className="w-full flex flex-col items-center">
+    <div className="flex w-full flex-col items-center">
       <Header />
       {children}
     </div>

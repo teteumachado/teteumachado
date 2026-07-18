@@ -14,24 +14,22 @@ export function FeaturedPost({ post }: Props) {
   return (
     <Link href={`/blog/${post.slug}`}>
       <article className="border p-4 transition-colors hover:border-primary/30 hover:shadow-sm">
-        <span className="text-[0.6rem] uppercase tracking-wider text-muted-foreground font-medium">
+        <span className="text-[0.6rem] font-medium tracking-wider text-muted-foreground uppercase">
           {t('featured')}
         </span>
-        <h2 className="text-base font-medium mt-1">{post.title}</h2>
-        <p className="text-sm text-muted-foreground mt-1">
-          {post.description}
-        </p>
-        <div className="flex flex-wrap gap-1 mt-2">
+        <h2 className="mt-1 text-base font-medium">{post.title}</h2>
+        <p className="mt-1 text-sm text-muted-foreground">{post.description}</p>
+        <div className="mt-2 flex flex-wrap gap-1">
           {post.tags.map((tag) => (
             <span
               key={tag}
-              className="text-[0.6rem] px-1.5 py-0.5 bg-muted text-muted-foreground"
+              className="bg-muted px-1.5 py-0.5 text-[0.6rem] text-muted-foreground"
             >
               {tag}
             </span>
           ))}
         </div>
-        <span className="text-[0.6rem] text-muted-foreground block mt-1">
+        <span className="mt-1 block text-[0.6rem] text-muted-foreground">
           {post.readingTime}
         </span>
       </article>

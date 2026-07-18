@@ -7,7 +7,8 @@
     "dev": "tsx watch --env-file=.env source/index.ts",
     "build": "tsc source/index.ts --outDir dist",
     "start": "NODE_ENV=production node dist/index.js",
-    "lint": "eslint"
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit"
   },
   "keywords": [],
   "author": "",
@@ -23,6 +24,7 @@
     "zod": "^4.4.3"
   },
   "dependencies": {
+    "@workspace/auth": "workspace:*",
     "@workspace/database": "workspace:*",
     "fastify": "^5.10.0"
   }

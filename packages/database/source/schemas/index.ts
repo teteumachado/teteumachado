@@ -1,1 +1,1 @@
-// Schemas will be added here as tables are created
+export * from './auth.js'
